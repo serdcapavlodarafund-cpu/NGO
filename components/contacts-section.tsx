@@ -24,7 +24,7 @@ const contactItems = [
   {
     icon: Mail,
     label: "Email",
-    value: "info@serdcapavlodara.kz",
+    value: "serdca.pavlodara.fund@gmail.com",
   },
 ]
 

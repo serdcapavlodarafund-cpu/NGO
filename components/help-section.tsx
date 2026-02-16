@@ -16,10 +16,38 @@ const helpWays = [
 
 export function HelpSection() {
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setSubmitted(true)
+    setLoading(true)
+    setError(null)
+
+    const formData = new FormData(e.currentTarget)
+    const data = {
+      name: formData.get("name") as string,
+      contact: formData.get("contact") as string,
+      message: formData.get("message") as string,
+    }
+
+    try {
+      const res = await fetch("/api/telegram", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+
+      if (!res.ok) {
+        throw new Error("Ошибка отправки")
+      }
+
+      setSubmitted(true)
+    } catch {
+      setError("Не удалось отправить сообщение. Попробуйте позже.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -105,8 +133,11 @@ export function HelpSection() {
                     required
                   />
                 </div>
-                <Button type="submit" size="lg">
-                  Отправить
+                {error && (
+                  <p className="text-sm text-destructive">{error}</p>
+                )}
+                <Button type="submit" size="lg" disabled={loading}>
+                  {loading ? "Отправка..." : "Отправить"}
                 </Button>
               </form>
             )}

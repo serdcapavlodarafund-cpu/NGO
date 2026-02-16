@@ -26,12 +26,6 @@ export function SiteFooter() {
           >
             Политика конфиденциальности
           </a>
-          <a
-            href="/terms"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Условия использования
-          </a>
         </nav>
 
         <p className="text-sm text-muted-foreground">

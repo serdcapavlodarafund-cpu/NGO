@@ -1,11 +1,13 @@
 "use client"
 
 import { useState, type FormEvent } from "react"
+import Link from "next/link"
 import { HandHeart, Package, Share2, Handshake, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
 
 const helpWays = [
   { icon: HandHeart, text: "Стать волонтёром" },
@@ -18,6 +20,7 @@ export function HelpSection() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [agreed, setAgreed] = useState(false)
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -133,10 +136,31 @@ export function HelpSection() {
                     required
                   />
                 </div>
+                <div className="flex items-start gap-2">
+                  <Checkbox
+                    id="privacy"
+                    checked={agreed}
+                    onCheckedChange={(v) => setAgreed(v === true)}
+                    required
+                  />
+                  <Label
+                    htmlFor="privacy"
+                    className="text-sm leading-snug text-muted-foreground font-normal"
+                  >
+                    {'Я соглашаюсь с '}
+                    <Link
+                      href="/privacy"
+                      target="_blank"
+                      className="text-primary underline underline-offset-2 hover:text-primary/80"
+                    >
+                      политикой обработки персональных данных
+                    </Link>
+                  </Label>
+                </div>
                 {error && (
                   <p className="text-sm text-destructive">{error}</p>
                 )}
-                <Button type="submit" size="lg" disabled={loading}>
+                <Button type="submit" size="lg" disabled={loading || !agreed}>
                   {loading ? "Отправка..." : "Отправить"}
                 </Button>
               </form>

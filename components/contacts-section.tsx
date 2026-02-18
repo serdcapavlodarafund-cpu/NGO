@@ -19,7 +19,7 @@ const contactItems = [
   {
     icon: Phone,
     label: "Телефон",
-    value: "+7 705 587 04 04",
+    value: "+7 705 987 04 04",
   },
   {
     icon: Mail,
